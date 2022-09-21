@@ -21,6 +21,8 @@ html, body, .main {
   flex-direction: column;
   width: 20rem;
   z-index: 99;
+  max-height: 20rem;
+  max-width: 20rem;
 }
 
 .name-label {

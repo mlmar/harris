@@ -58,22 +58,18 @@ function inputHandler(event) {
   } catch(ex) {
     numericalUserInput = -1;
   }
+
+  // Reset positioning
+  $control.removeClass('top');
+  $control.removeClass('bottom');
+  $control.removeClass('left');
+  $control.removeClass('right');
   $control.removeClass('center');
 
-  switch(numericalUserInput) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-      $control.addClass(positioningBasedOnNumber[numericalUserInput]);
-      break;
-    default:
-      $control.removeClass('top');
-      $control.removeClass('bottom');
-      $control.removeClass('left');
-      $control.removeClass('right');
-      $control.addClass('center');
-      break;
+  if(numericalUserInput >= 1 && numericalUserInput <= 4) {
+    $control.addClass(positioningBasedOnNumber[numericalUserInput]);
+  } else {
+    $control.addClass('center');
   }
 }
 
@@ -83,18 +79,27 @@ function initNumberSquares() {
   $topRight = new NumberSquare('right', 'top', '2').load();
   $bottomLeft = new NumberSquare('left', 'bottom', '3').load();
   $bottomRight = new NumberSquare('right', 'bottom', '4').load();
+
+  $('.number-square').on('click', (event) => {
+    let id = event.target.id;
+    $textInput.val(id);
+    $textInput.trigger('input');
+  });
 }
 
 // OBJECT ORIENTED PROGRAMMING
 // Generic function to create square at any corner position containing any text
 function NumberSquare(xPos, yPos, text) {
+  this.$el = null;
+
   this.load = () => {
     let cssClasses = [xPos, yPos].join(' ');
-    $main.append([
-      `<div class="number-square ${cssClasses}">`,
+    $el = $([
+      `<div class="number-square ${cssClasses}" id="${text}">`,
         text,
       `</div>`
     ].join('\n'));
+    $main.append($el);
     return this;
   }
 }
